@@ -11,8 +11,9 @@ emp1_dict=json.loads(newline1)
 emp2_dict=json.loads(newline2)
 s1=emp1_dict['Employee1'].keys()    
 s2=emp2_dict['Employee2'].keys()
+files=open("output_3.txt","w")
 if s1!=s2:
-    print("no slot since dates are different")
+    files.write("no slot since dates are different")
 else:
     s1=str(s1)
     s1=s1[12:-3]
@@ -246,15 +247,14 @@ else:
     #print(ans)           
     final[s1]=ans
     #print(final)
-str1="Available slot \n"
-str2="employee1:"+ str(ans1) +"\n"
-str3="employee2:"+ str(ans2) +"\n"
-str4="slot duration:"+ str(slot) + "minutes \n"
-str5=str(final)  
-L = [str1,str2,str3,str4,str5]  
-files=open("output_3.txt","w")
-files.writelines(L)
-files.close()        
+    str1="Available slot \n"
+    str2="employee1:"+ str(ans1) +"\n"
+    str3="employee2:"+ str(ans2) +"\n"
+    str4="slot duration:"+ str(float(slot/60)) + "hours \n"
+    str5=str(final)  
+    L = [str1,str2,str3,str4,str5]  
+    files.writelines(L)
+    files.close()        
     
 
 
