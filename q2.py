@@ -1,46 +1,49 @@
 import sys
 m_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 path = 'date_calculator.txt'
-f = open(path, 'r')
-if(len(sys.argv)==2):
-    for line in f:
-        if line[4] == '1':
-            line = line[7:]
-            if str(sys.argv[1]) =='dd/mm/yyyy' or str(sys.argv[1]) =='dd-mm-yyyy' or str(sys.argv[1]) =='dd.mm.yyyy':
-                d1 = int(line[0:2])
-                y1 = int(line[-5:-1])
-                m1 = int(line[3:5])
-            else:
-                m1=int(line[0:2])
-                y1=int(line[-5:-1])
-                d1=int(line[3:5])
-            n1 = y1*365+d1
-            for i in range(0, m1-1):
-                n1 += m_days[i]
-            if(m1 <= 2):
-                y1 -= 1
-            n1 += int(y1//4+y1//400-y1//100)        
-        else:
-            line = line[7:]
-            if str(sys.argv[1]) =='dd/mm/yyyy' or str(sys.argv[1]) =='dd-mm-yyyy' or str(sys.argv[1]) =='dd.mm.yyyy':
-                d2 = int(line[0:2])
-                y2 = int(line[-5:-1])
-                m2 = int(line[3:5])
-            else:
-                m2=int(line[0:2])
-                y2=int(line[-5:-1])
-                d2=int(line[3:5])
-            n2 = y2*365+d2
-            for i in range(0, m2-1):
-                n2 += m_days[i]
-            if(m2 <= 2):
-                y2 -= 1
-            n2 += int(y2//4+y2//400-y2//100)
+def with_arg():
+    if str(sys.argv[1]) =='dd/mm/yyyy' or str(sys.argv[1]) =='dd-mm-yyyy' or str(sys.argv[1]) =='dd.mm.yyyy':
+        d1 = int(line[0:2])
+        y1 = int(line[-5:-1])
+        m1 = int(line[3:5])
+    else:
+        m1=int(line[0:2])
+        y1=int(line[-5:-1])
+        d1=int(line[3:5])
+    n1 = y1*365+d1
+    for i in range(0, m1-1):
+        n1 += m_days[i]
+    if(m1 <= 2):
+        y1 -= 1
+    n1 += int(y1//4+y1//400-y1//100)
+    return n1 
+
+def write():
     l = "Date Difference:" + str(abs(n2-n1))
     f.close()
     files = open("output_2.txt", "w")
     files.write(l)
     files.close()
+   
+def cal_days(d,m,y):
+    n = y*365+d
+    for i in range(0, m-1):
+        n += m_days[i]
+    if(m <= 2):
+        y -= 1
+    n += int(y//4+y//400-y//100)
+    return n
+
+f = open(path, 'r')
+if(len(sys.argv)==2):
+    for line in f:
+        if line[4] == '1':
+            line = line[7:]
+            n1=with_arg()
+        else:
+            line = line[7:]
+            n2=with_arg()
+    write()
 else:
     for line in f:
         if line[4]=='1':
@@ -72,12 +75,7 @@ else:
                 m1 = 11
             elif s1 == 'December' or s1 == 'Dec':
                 m1 = 12
-            n1 = y1*365+d1
-            for i in range(0, m1-1):
-                n1 += m_days[i]
-            if(m1 <= 2):
-                y1 -= 1
-            n1 += int(y1//4+y1//400-y1//100)
+            n1=cal_days(d1,m1,y1)        
         else:
             line = line[7:]
             d2 = int(line[0:2])
@@ -106,15 +104,8 @@ else:
             elif s2 == 'November' or s2 == 'Nov':
                 m2 = 11
             elif s2 == 'December' or s2 == 'Dec':
-                m2 = 12
-            n2 = y2*365+d2
-            for i in range(0, m2-1):
-                n2 += m_days[i]
-            if(m2 <= 2):
-                y2 -= 1
-            n2 += int(y2//4+y2//400-y2//100)
-    l = "Date Difference:" + str(abs(n2-n1))
-    f.close()
-    files = open("output_2.txt", "w")
-    files.write(l)
-    files.close()
+                m2 = 12          
+            n2=cal_days(d2,m2,y2)
+    write()
+    
+        
